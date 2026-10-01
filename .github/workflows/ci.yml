@@ -1,0 +1,86 @@
+# Quality gate: every push and pull request
+#   1. tests + offline evaluation on SQLite (fast, no secrets)
+#   2. the same pipeline against a real Microsoft SQL Server (service container)
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-and-evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - name: Ingest current law texts (official source, mirror as fallback)
+        run: PYTHONPATH=src python -m regelrag.ingest
+      - name: Tests
+        run: python -m pytest -q
+      - name: Evaluation + quality gate (fails the build if a limit is violated)
+        run: PYTHONPATH=src python -m regelrag.evaluate --generator extractive
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evaluation-report
+          path: reports/eval_*.md
+
+  sql-server:
+    runs-on: ubuntu-latest
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: ${{ secrets.MSSQL_SA_PASSWORD || 'CiOnly!Passw0rd2026' }}
+        ports:
+          - 1433:1433
+    env:
+      DATABASE_URL: "mssql+pyodbc://sa:${{ secrets.MSSQL_SA_PASSWORD || 'CiOnly!Passw0rd2026' }}@localhost:1433/master?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Microsoft ODBC Driver 18 (skipped if the runner already has it)
+        run: |
+          if ! odbcinst -q -d 2>/dev/null | grep -q "ODBC Driver 18"; then
+            curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
+            curl -sSL https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+            sudo apt-get update
+            sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18 unixodbc-dev
+          fi
+      - run: pip install -r requirements-dev.txt -r requirements-mssql.txt
+      - name: Wait until SQL Server accepts connections
+        run: |
+          PYTHONPATH=src python - <<'PY'
+          import os, time
+          from sqlalchemy import create_engine, text
+          for i in range(30):
+              try:
+                  with create_engine(os.environ["DATABASE_URL"]).connect() as c:
+                      print(c.execute(text("SELECT @@VERSION")).scalar().splitlines()[0]); break
+              except Exception as e:
+                  print("waiting...", e.__class__.__name__); time.sleep(5)
+          else:
+              raise SystemExit("SQL Server not reachable")
+          PY
+      - name: Ingest into SQL Server and evaluate from SQL Server
+        run: |
+          PYTHONPATH=src python -m regelrag.ingest
+          PYTHONPATH=src python -m regelrag.evaluate --generator extractive
+      - name: Show what is stored
+        run: |
+          PYTHONPATH=src python - <<'PY'
+          import os
+          from sqlalchemy import create_engine, text
+          with create_engine(os.environ["DATABASE_URL"]).connect() as c:
+              for t in ("passages", "source_versions", "eval_runs", "eval_results"):
+                  print(t, c.execute(text(f"SELECT COUNT(*) FROM {t}")).scalar())
+          PY

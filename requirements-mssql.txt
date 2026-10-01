@@ -1,0 +1,2 @@
+# Only needed for SQL Server (also requires the Microsoft ODBC Driver 18 on the machine)
+pyodbc==5.3.0

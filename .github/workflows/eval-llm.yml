@@ -1,0 +1,25 @@
+# Manual: evaluate the Claude generator (costs a few cents). Needs repository secret ANTHROPIC_API_KEY.
+name: Evaluate LLM
+
+on:
+  workflow_dispatch:
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - name: Evaluate with Claude
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: PYTHONPATH=src python -m regelrag.evaluate --generator anthropic
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: llm-evaluation-report
+          path: reports/eval_anthropic*.md

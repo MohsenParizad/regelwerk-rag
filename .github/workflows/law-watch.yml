@@ -1,0 +1,50 @@
+# Monitoring: laws change. Every Monday, download the current texts; if a law changed,
+# re-run the evaluation and open an issue so a human reviews the knowledge base (BPMN timer event).
+name: Law watch
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - name: Download and compare with the committed version
+        id: watch
+        run: |
+          PYTHONPATH=src python -m regelrag.ingest
+          if git diff --quiet -- data/passages.jsonl; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --stat -- data/passages.jsonl
+          fi
+      - name: Re-evaluate on the new law version
+        if: steps.watch.outputs.changed == 'true'
+        run: |
+          set +e
+          PYTHONPATH=src python -m regelrag.evaluate --generator extractive
+          echo "exit code $?"
+      - name: Open an issue for review
+        if: steps.watch.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "The law texts in the knowledge base changed. Please review the test set (answers may be outdated) and commit the new data/passages.jsonl."
+            echo; echo '```'; git diff --stat -- data/passages.jsonl; echo '```'; echo
+            cat reports/eval_extractive.md
+          } > body.md
+          gh issue create --title "Gesetzesänderung erkannt: Wissensbasis und Testset prüfen" --body-file body.md

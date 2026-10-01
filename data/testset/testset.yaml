@@ -1,0 +1,230 @@
+# Golden test set for the evaluation (Step 8).
+#
+# Fields
+#   id          stable identifier (q = answerable, u = not answerable from the corpus)
+#   question    as a colleague in the department would ask it
+#   relevant    passage ids that contain the answer (used for retrieval metrics)
+#   key_facts   short phrases the answer must contain (case-insensitive); "a | b" = either is fine
+#   answerable  false = the corpus does not contain the answer -> correct behaviour is to abstain
+#
+# Every answer was checked against the law text in data/passages.jsonl (SGB V and KHG,
+# status of the downloaded version, see data/raw/manifest.json).
+# Add your own questions: write the question first, then look up the answer in the law.
+
+- id: q01
+  question: Innerhalb welcher Frist muss die Prüfung einer Krankenhausrechnung eingeleitet werden?
+  relevant: [SGB V § 275c Abs. 1]
+  key_facts: [vier Monate]
+  answerable: true
+- id: q02
+  question: Wie hoch ist die Aufwandspauschale, wenn die Prüfung nicht zu einer Minderung des Abrechnungsbetrages führt?
+  relevant: [SGB V § 275c Abs. 1]
+  key_facts: [300 Euro]
+  answerable: true
+- id: q03
+  question: Bei welchem Medizinischen Dienst ist die Prüfung einer Krankenhausabrechnung einzuleiten?
+  relevant: [SGB V § 275c Abs. 1]
+  key_facts: [örtlich]
+  answerable: true
+- id: q04
+  question: Welche quartalsbezogene Prüfquote galt im Jahr 2021?
+  relevant: [SGB V § 275c Abs. 2]
+  key_facts: ["12,5 Prozent"]
+  answerable: true
+- id: q05
+  question: Wovon hängt die quartalsbezogene Prüfquote je Krankenhaus ab dem Jahr 2022 ab?
+  relevant: [SGB V § 275c Abs. 2]
+  key_facts: [unbeanstandeter Abrechnungen]
+  answerable: true
+- id: q06
+  question: Wie hoch ist der Aufschlag bei beanstandeten Abrechnungen ab dem 12. Dezember 2024?
+  relevant: [SGB V § 275c Abs. 3]
+  key_facts: [400 Euro]
+  answerable: true
+- id: q07
+  question: Ab welchem Anteil unbeanstandeter Abrechnungen müssen Krankenhäuser einen Aufschlag zahlen?
+  relevant: [SGB V § 275c Abs. 3]
+  key_facts: [unterhalb von 60 Prozent]
+  answerable: true
+- id: q08
+  question: Haben Widerspruch und Klage gegen die Ermittlung der Prüfquote aufschiebende Wirkung?
+  relevant: [SGB V § 275c Abs. 5]
+  key_facts: [keine aufschiebende Wirkung]
+  answerable: true
+- id: q09
+  question: Sind Vereinbarungen über pauschale Abschläge zur Abbedingung der Abrechnungsprüfung zulässig?
+  relevant: [SGB V § 275c Abs. 7]
+  key_facts: [nicht zulässig]
+  answerable: true
+- id: q10
+  question: In welchen Fällen ist eine einzelfallbezogene Prüfung durch den Medizinischen Dienst nicht zulässig?
+  relevant: [SGB V § 275c Abs. 6]
+  key_facts: [tagesbezogenen Pflegeentgelten | Pflegeentgelte]
+  answerable: true
+- id: q11
+  question: Darf ein Krankenhaus seine Abrechnung nach der Übermittlung an die Krankenkasse noch korrigieren?
+  relevant: [KHG § 17c Abs. 2a]
+  key_facts: [ausgeschlossen]
+  answerable: true
+- id: q12
+  question: Wer regelt das Nähere zum Prüfverfahren bei Krankenhausabrechnungen?
+  relevant: [KHG § 17c Abs. 2]
+  key_facts: [Spitzenverband Bund der Krankenkassen, Deutsche Krankenhausgesellschaft]
+  answerable: true
+- id: q13
+  question: Was muss vor einer Klage gegen eine Krankenhausabrechnung geschehen?
+  relevant: [KHG § 17c Abs. 2b]
+  key_facts: [erörtert]
+  answerable: true
+- id: q14
+  question: Wer trägt die Kosten der Schlichtungsperson?
+  relevant: [KHG § 17c Abs. 3]
+  key_facts: [gleichen Teilen]
+  answerable: true
+- id: q15
+  question: Bis wann erstellt der Spitzenverband Bund der Krankenkassen jährlich die Statistik zur Abrechnungsprüfung?
+  relevant: [KHG § 17c Abs. 6]
+  key_facts: [30. Juni]
+  answerable: true
+- id: q16
+  question: Was versteht das Gesetz unter Fehlbelegung im Krankenhaus?
+  relevant: [KHG § 17c Abs. 1]
+  key_facts: [nicht der stationären Krankenhausbehandlung bedürfen | nicht mehr der stationären Krankenhausbehandlung bedürfen]
+  answerable: true
+- id: q17
+  question: In welcher Frist verjähren Vergütungsansprüche der Krankenhäuser?
+  relevant: [SGB V § 109 Abs. 5]
+  key_facts: [zwei Jahren]
+  answerable: true
+- id: q18
+  question: Dürfen Krankenkassen gegen Forderungen von Krankenhäusern mit Rückforderungsansprüchen aufrechnen?
+  relevant: [SGB V § 109 Abs. 6]
+  key_facts: [nicht mit Ansprüchen auf Rückforderung | nicht bestritten]
+  answerable: true
+- id: q19
+  question: Welche Krankenhäuser gelten als zugelassene Krankenhäuser?
+  relevant: [SGB V § 108 Abs. 1]
+  key_facts: [Hochschulklinik, Plankrankenhäuser, Versorgungsvertrag]
+  answerable: true
+- id: q20
+  question: Was ist eine Vorsorge- oder Rehabilitationseinrichtung im Sinne des SGB V?
+  relevant: [SGB V § 107 Abs. 2]
+  key_facts: [stationären Behandlung]
+  answerable: true
+- id: q21
+  question: Welche Angaben zur Aufnahme muss ein Krankenhaus der Krankenkasse übermitteln?
+  relevant: [SGB V § 301 Abs. 1]
+  key_facts: [Aufnahmediagnose | Grund der Aufnahme]
+  answerable: true
+- id: q22
+  question: Nach welcher Klassifikation sind die Diagnosen bei der Datenübermittlung zu verschlüsseln?
+  relevant: [SGB V § 301 Abs. 2]
+  key_facts: [Internationalen Klassifikation der Krankheiten]
+  answerable: true
+- id: q23
+  question: Muss die Krankenkasse dem Krankenhaus einen bestehenden Pflegegrad des Patienten übermitteln?
+  relevant: [SGB V § 301 Abs. 2a]
+  key_facts: [unverzüglich]
+  answerable: true
+- id: q24
+  question: Wer vereinbart das Verfahren der Abrechnung im Wege elektronischer Datenübertragung?
+  relevant: [SGB V § 301 Abs. 3]
+  key_facts: [Deutschen Krankenhausgesellschaft]
+  answerable: true
+- id: q25
+  question: Welche Angaben müssen Rehabilitationseinrichtungen den Krankenkassen übermitteln?
+  relevant: [SGB V § 301 Abs. 4]
+  key_facts: [Tag der Aufnahme | Aufnahmediagnose]
+  answerable: true
+- id: q26
+  question: Wann gilt eine Anschlussrehabilitation noch als unmittelbar an die Krankenhausbehandlung anschließend?
+  relevant: [SGB V § 40 Abs. 6]
+  key_facts: [14 Tagen]
+  answerable: true
+- id: q27
+  question: Für wie viele Tage im Kalenderjahr zahlen Versicherte bei vollstationärer Krankenhausbehandlung zu?
+  relevant: [SGB V § 39 Abs. 4]
+  key_facts: [28 Tage]
+  answerable: true
+- id: q28
+  question: Unter welcher Voraussetzung erbringt die Krankenkasse stationäre Rehabilitation?
+  relevant: [SGB V § 40 Abs. 2]
+  key_facts: [nicht aus]
+  answerable: true
+- id: q29
+  question: Wozu dient das Entlassmanagement des Krankenhauses?
+  relevant: [SGB V § 39 Abs. 1a]
+  key_facts: [sektorenübergreifenden Versorgung]
+  answerable: true
+- id: q30
+  question: Mit welcher Frist kann der Versorgungsvertrag mit einer Rehabilitationseinrichtung gekündigt werden?
+  relevant: [SGB V § 111 Abs. 4]
+  key_facts: [einem Jahr]
+  answerable: true
+- id: q31
+  question: Was regeln die zweiseitigen Verträge über Krankenhausbehandlung insbesondere?
+  relevant: [SGB V § 112 Abs. 2]
+  key_facts: [Aufnahme und Entlassung]
+  answerable: true
+- id: q32
+  question: In welcher Form muss eine fallabschließende gutachtliche Stellungnahme des Medizinischen Dienstes verfasst sein?
+  relevant: [SGB V § 275 Abs. 6]
+  key_facts: [schriftlicher oder elektronischer Form]
+  answerable: true
+- id: q33
+  question: Dürfen Gutachter des Medizinischen Dienstes in die Behandlung der Versicherten eingreifen?
+  relevant: [SGB V § 275 Abs. 5]
+  key_facts: [nicht berechtigt]
+  answerable: true
+- id: q34
+  question: Was droht Versicherten, die ohne zwingenden Grund ein anderes als das in der Einweisung genannte Krankenhaus wählen?
+  relevant: [SGB V § 39 Abs. 2]
+  key_facts: [Mehrkosten]
+  answerable: true
+- id: q35
+  question: Was regelt § 275c Absatz 7?
+  relevant: [SGB V § 275c Abs. 7]
+  key_facts: [pauschale Abschläge]
+  answerable: true
+
+# --- Not answerable from the corpus: the correct behaviour is "no basis found" ---
+- id: u01
+  question: Wie hoch ist der Landesbasisfallwert in Nordrhein-Westfalen?
+  relevant: []
+  key_facts: []
+  answerable: false
+- id: u02
+  question: Welche Deutsche Kodierrichtlinie gilt für die Kodierung einer Sepsis?
+  relevant: []
+  key_facts: []
+  answerable: false
+- id: u03
+  question: Wie viel Euro beträgt die Zuzahlung je Kalendertag bei einer Krankenhausbehandlung?
+  relevant: []
+  key_facts: []
+  answerable: false   # trap: the corpus only refers to § 61 Satz 2, which is not included
+- id: u04
+  question: Wie hoch ist der Zuschlag für ein Einzelzimmer als Wahlleistung?
+  relevant: []
+  key_facts: []
+  answerable: false
+- id: u05
+  question: Welche Frist gilt für einen Widerspruch gegen einen Leistungsbescheid der Krankenkasse?
+  relevant: []
+  key_facts: []
+  answerable: false   # trap: "Widerspruch" occurs in § 275c Abs. 5, but not the deadline
+- id: u06
+  question: Wie beantrage ich eine elektronische Gesundheitskarte?
+  relevant: []
+  key_facts: []
+  answerable: false
+- id: u07
+  question: Welche Leistungen übernimmt die Pflegeversicherung bei Pflegegrad 3?
+  relevant: []
+  key_facts: []
+  answerable: false
+- id: u08
+  question: Wie berechnet man das Relativgewicht einer DRG?
+  relevant: []
+  key_facts: []
+  answerable: false

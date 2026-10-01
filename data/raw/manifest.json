@@ -1,0 +1,10 @@
+{
+  "SGB V": {
+    "origin": "https://raw.githubusercontent.com/QuantLaw/gesetze-im-internet/data/data/items/sgb_5/BJNR024820988.xml",
+    "sha256": "6272617e28438f820a8610d94f3d1e8cb78cf15cb7661eb0832f4da50af354b3"
+  },
+  "KHG": {
+    "origin": "https://raw.githubusercontent.com/QuantLaw/gesetze-im-internet/data/data/items/khg/BJNR010090972.xml",
+    "sha256": "655ad713d0bfa1df12abb0058186756fb79031274c33ac4d7a0a736395407089"
+  }
+}

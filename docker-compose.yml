@@ -1,0 +1,15 @@
+# Local SQL Server for the knowledge base and evaluation results.
+# Start: docker compose up -d mssql   (needs about 2 GB RAM)
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourStrong!Passw0rd"   # local demo only; use a secret in real deployments
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+volumes:
+  mssql-data:
