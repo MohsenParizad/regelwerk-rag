@@ -1,5 +1,5 @@
 # Regelwerk-Assistent: RAG für Krankenhausabrechnung und Reha – mit messbarer Qualität
-
+![CI](https://github.com/MohsenParizad/regelwerk-rag/actions/workflows/ci.yml/badge.svg)
 Ein bewusst kleines, nachvollziehbares **Retrieval-Augmented-Generation-System**, das Fragen zur
 Abrechnungsprüfung von Krankenhausleistungen und zur Rehabilitation beantwortet –
 **ausschließlich** aus den Gesetzestexten, **jede Aussage mit Quelle**, und mit „Dazu finde ich keine
